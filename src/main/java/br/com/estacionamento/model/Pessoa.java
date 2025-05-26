@@ -1,20 +1,33 @@
 package br.com.estacionamento.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.time.LocalDate;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@MappedSuperclass
 @Getter
 @Setter
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class Pessoa {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cliente_seq")
-    @SequenceGenerator(name = "cliente_seq", sequenceName = "cliente_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    private String nome;
+
     private String cpf;
+
     private String telefone;
+
+    private LocalDate dataNasc;
+
+    public abstract String getTipo();
 }

@@ -2,17 +2,39 @@ package br.com.estacionamento.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
-import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
+@Table(name = "funcionarios")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "funcionario")
 public class Funcionario extends Pessoa {
-    @OneToMany(mappedBy = "funcionario")
-    private List<Ticket> tickets;
+
+    @Column(name = "pis", unique = true, length = 14, nullable = false)
+    private String pis;
+
+    @Column(name = "cargo", nullable = false, length = 50)
+    private String cargo;
+
+    @Column(name = "salario", precision = 10, scale = 2, nullable = false)
+    private BigDecimal salario;
+
+    @Column(name = "data_admissao", nullable = false)
+    private LocalDate dataAdmissao;
+
+    @ManyToOne
+    @JoinColumn(name = "estacionamento_id")
+    private Estacionamento estacionamento;
+
+    @Embedded
+    private Endereco endereco;
+
+    @Override
+    public String getTipo() {
+        return "FUNCIONARIO";
+    }
 }

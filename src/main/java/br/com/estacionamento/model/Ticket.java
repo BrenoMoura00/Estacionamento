@@ -2,41 +2,43 @@ package br.com.estacionamento.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
 @Entity
 @Table(name = "tickets")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Ticket {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "funcionario_id")
-    private Funcionario funcionario;
-
+    @Column(name = "valor", nullable = false, precision = 10, scale = 2)
     private BigDecimal valor;
 
-    @ManyToOne
-    @JoinColumn(name = "veiculo_id")
-    private Veiculo veiculo;
+    @Column(name = "tempo_permanencia", nullable = false)
+    private Integer tempoPermanencia;
 
-    private LocalDateTime horaEntrada;
+    @Column(name = "hora_saida")
     private LocalDateTime horaSaida;
 
-    @ManyToOne
-    @JoinColumn(name = "estacionamento_id")
-    private Estacionamento estacionamento;
-
+    @OneToOne(mappedBy = "ticket")
+    private Pagamento pagamento;
+    
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "veiculo_id", nullable = false)
+    private Veiculo veiculo;
+
+    @ManyToOne
+    @JoinColumn(name = "funcionario_id")
+    private Funcionario funcionario;
 }
